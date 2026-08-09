@@ -1,4 +1,4 @@
-# Cornett Creative Consulting
+# Cornett Consulting Company
 
 **Agile-based process and productivity consulting — work smarter, move with intention, build real momentum.**
 
@@ -8,7 +8,7 @@
 
 ## About
 
-Cornett Creative Consulting delivers grounded, Agile-based process and productivity consulting — no matter where your team is located. We plan with intention before we move, helping teams work smarter, build steady momentum, and turn stalled process into real productivity and revenue gains.
+Cornett Consulting Company delivers grounded, Agile-based process and productivity consulting — no matter where your team is located. We plan with intention before we move, helping teams work smarter, build steady momentum, and turn stalled process into real productivity and revenue gains.
 
 ## At a Glance
 
