@@ -152,7 +152,7 @@
       <ul class="gaps" id="gapsList"></ul>
 
       <form class="email-row" id="emailForm">
-        <input type="email" id="emailInput" placeholder="you@yourbusiness.com" required>
+        <input type="email" id="emailInput" placeholder="you@yourbusiness.com">
         <button type="submit">Email Me My Results</button>
       </form>
       <div class="email-note">Optional — we'll only use this to send your results and relevant follow-up.</div>
@@ -327,17 +327,43 @@ document.getElementById("seeResultsBtn").addEventListener("click", () => {
   panel.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
-// Email capture — no backend wired yet, see note in project files.
-// Replace hello@3ccconsulting.com with your real inbox,
-// or swap this whole handler for a Formspree / Mailchimp / ConvertKit form action.
-document.getElementById("emailForm").addEventListener("submit", (e) => {
+// Email capture — submits in the background to Formspree, no page reload,
+// no mail-app popup. Notifications land at hello@3ccconsulting.com.
+document.getElementById("emailForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const email = document.getElementById("emailInput").value;
+  const emailInput = document.getElementById("emailInput");
+  const email = emailInput.value;
   const score = currentScore();
   const bandName = bandFor(score).name;
-  const subject = encodeURIComponent("New Compliance Checklist Lead");
-  const body = encodeURIComponent(`Lead email: ${email}\nScore: ${score}/${TOTAL}\nBand: ${bandName}`);
-  window.location.href = `mailto:hello@3ccconsulting.com?subject=${subject}&body=${body}`;
+  const submitBtn = e.target.querySelector("button[type=submit]");
+  const originalLabel = submitBtn.textContent;
+
+  submitBtn.textContent = "Sending...";
+  submitBtn.disabled = true;
+
+  const formData = new FormData();
+  formData.append("email", email || "(not provided)");
+  formData.append("score", `${score} / ${TOTAL}`);
+  formData.append("band", bandName);
+  formData.append("_subject", "New Compliance Checklist Lead");
+
+  try {
+    const res = await fetch("https://formspree.io/f/meajdwqe", {
+      method: "POST",
+      headers: { "Accept": "application/json" },
+      body: formData
+    });
+    if (res.ok) {
+      submitBtn.textContent = "Sent — thank you!";
+      emailInput.disabled = true;
+    } else {
+      throw new Error("Formspree responded with an error");
+    }
+  } catch (err) {
+    submitBtn.textContent = originalLabel;
+    submitBtn.disabled = false;
+    alert("Something went wrong sending your results. Please try again, or email us directly at hello@3ccconsulting.com.");
+  }
 });
 </script>
 
