@@ -328,7 +328,7 @@ document.getElementById("seeResultsBtn").addEventListener("click", () => {
 });
 
 // Email capture — submits in the background to Formspree, no page reload,
-// no mail-app popup. Notifications land at hello@3ccconsulting.com.
+// no mail-app popup. Notifications land at consulting3cc@gmail.com.
 document.getElementById("emailForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const emailInput = document.getElementById("emailInput");
@@ -362,7 +362,7 @@ document.getElementById("emailForm").addEventListener("submit", async (e) => {
   } catch (err) {
     submitBtn.textContent = originalLabel;
     submitBtn.disabled = false;
-    alert("Something went wrong sending your results. Please try again, or email us directly at hello@3ccconsulting.com.");
+    alert("Something went wrong sending your results. Please try again, or email us directly at consulting3cc@gmail.com.");
   }
 });
 </script>
