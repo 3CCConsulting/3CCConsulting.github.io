@@ -152,7 +152,7 @@
       <ul class="gaps" id="gapsList"></ul>
 
       <form class="email-row" id="emailForm">
-        <input type="email" id="emailInput" placeholder="you@yourbusiness.com">
+        <input type="email" id="emailInput" placeholder="you@yourbusiness.com" required>
         <button type="submit">Email Me My Results</button>
       </form>
       <div class="email-note">Optional — we'll only use this to send your results and relevant follow-up.</div>
@@ -338,31 +338,52 @@ document.getElementById("emailForm").addEventListener("submit", async (e) => {
   const submitBtn = e.target.querySelector("button[type=submit]");
   const originalLabel = submitBtn.textContent;
 
+  // ------------------------------------------------------------------
+  // Lead capture -> MailerLite, group "Compliance Checklist".
+  // Replaced Formspree 2026-08-27: Formspree delivers to an inbox but adds
+  // nobody to a list, so nobody completing this page ever became a subscriber
+  // and no sequence could ever fire. AJAX first, real form POST as fallback.
+  // ------------------------------------------------------------------
+  const ML_ENDPOINT = "https://assets.mailerlite.com/jsonp/2596829/forms/196947560723645444/subscribe";
+  const fields = {
+    "fields[email]": email,
+    "fields[checklist_score]": score + " / " + TOTAL,
+    "fields[checklist_band]": bandName,
+    "ml-submit": "1",
+    "anticsrf": "true"
+  };
+
   submitBtn.textContent = "Sending...";
   submitBtn.disabled = true;
 
-  const formData = new FormData();
-  formData.append("email", email || "(not provided)");
-  formData.append("score", `${score} / ${TOTAL}`);
-  formData.append("band", bandName);
-  formData.append("_subject", "New Compliance Checklist Lead");
-
   try {
-    const res = await fetch("https://formspree.io/f/meajdwqe", {
-      method: "POST",
-      headers: { "Accept": "application/json" },
-      body: formData
-    });
-    if (res.ok) {
-      submitBtn.textContent = "Sent — thank you!";
-      emailInput.disabled = true;
-    } else {
-      throw new Error("Formspree responded with an error");
+    const fd = new FormData();
+    Object.entries(fields).forEach(([k, v]) => fd.append(k, v));
+    const res = await fetch(ML_ENDPOINT, { method: "POST", body: fd });
+    if (!res.ok) throw new Error("Request failed");
+    submitBtn.textContent = "Sent \u2713";
+    emailInput.disabled = true;
+    const note = document.querySelector(".email-note");
+    if (note) {
+      note.textContent = "Thanks \u2014 check your inbox and click the confirmation link, then your results are on the way.";
+      note.style.color = "#4E9A3A";
+      note.style.fontWeight = "600";
     }
   } catch (err) {
-    submitBtn.textContent = originalLabel;
-    submitBtn.disabled = false;
-    alert("Something went wrong sending your results. Please try again, or email us directly at consulting3cc@gmail.com.");
+    // Guaranteed path: a real form POST is not subject to CORS.
+    const form = document.createElement("form");
+    form.action = ML_ENDPOINT;
+    form.method = "POST";
+    form.style.display = "none";
+    Object.entries(fields).forEach(([k, v]) => {
+      const input = document.createElement("input");
+      input.type = "hidden"; input.name = k; input.value = v;
+      form.appendChild(input);
+    });
+    document.body.appendChild(form);
+    const note = document.querySelector(".email-note");
+    if (note) note.textContent = "Confirming \u2014 you'll land right back on this page in a moment...";
+    form.submit();
   }
 });
 </script>
