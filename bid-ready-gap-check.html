@@ -92,6 +92,11 @@
   .email-row button{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:11px 18px;
     font-weight:700;font-size:13.5px;cursor:pointer;white-space:nowrap;}
   .email-note{font-size:11.5px;color:#8a93a3;margin:-8px 0 18px;}
+  .email-gate{background:#f6f8fb;border:1px solid var(--line);border-radius:10px;padding:16px 16px 4px;margin:0 0 18px;}
+  .email-gate .gate-title{font-size:13px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.04em;margin:0 0 6px;}
+  .email-gate .gate-copy{font-size:14px;color:var(--navy-dark);margin:0 0 12px;line-height:1.5;}
+  .email-gate .email-row{margin-bottom:10px;}
+  .email-gate .email-note{margin:0 0 12px;}
 
   .cta-final{text-align:center;padding-top:6px;border-top:1px dashed var(--line);}
   .cta-final p{margin:0 0 14px;font-size:15px;font-weight:600;color:var(--navy-dark);}
@@ -148,14 +153,20 @@
     <div class="body">
       <p id="resultsCopy"></p>
 
-      <div class="gaps-title">Categories worth a closer look</div>
-      <ul class="gaps" id="gapsList"></ul>
+      <div class="email-gate" id="emailGate">
+        <div class="gate-title">See which categories are costing you</div>
+        <p class="gate-copy">You have your score. The breakdown &mdash; which of the five categories you came up short on, and by how much &mdash; comes with your emailed results.</p>
+        <form class="email-row" id="emailForm">
+          <input type="email" id="emailInput" placeholder="you@yourbusiness.com" required>
+          <button type="submit" id="emailBtn">Show My Breakdown</button>
+        </form>
+        <div class="email-note" id="emailNote">One email with your results, and occasional notes worth reading. Unsubscribe any time.</div>
+      </div>
 
-      <form class="email-row" id="emailForm">
-        <input type="email" id="emailInput" placeholder="you@yourbusiness.com" required>
-        <button type="submit" id="emailBtn">Email Me My Results</button>
-      </form>
-      <div class="email-note" id="emailNote">Optional — we'll only use this to send your results and relevant follow-up.</div>
+      <div id="gapDetail" hidden>
+        <div class="gaps-title">Categories worth a closer look</div>
+        <div id="gapsWrap"><ul class="gaps" id="gapsList"></ul></div>
+      </div>
 
       <div class="cta-final">
         <p>Fifteen minutes, no prep, no pitch deck. We go through what you did not check, and I tell you plainly which gaps matter for the work you are bidding.</p>
@@ -167,7 +178,7 @@
 
 <footer>
   Cornett Consulting Company — Strategy → Innovation → Transformation
-  <div class="fnote">This is a self-assessment, not an audit or a certification review. It is meant to show you where to look first &mdash; not to replace a real assessment of your situation, your customer's requirements, or the standard they are asking you to meet. — write one appropriate to this tool's topic, matching the tone of: "This checklist is a self-assessment tool, not a legal or compliance audit. It's meant to help you spot where to look closer, not to replace professional review of your specific situation."</div>
+  <div class="fnote">This is a self-assessment, not an audit or a certification review. It is meant to show you where to look first &mdash; not to replace a real assessment of your situation, your customer's requirements, or the standard they are asking you to meet.</div>
 </footer>
 
 <script>
@@ -296,20 +307,30 @@ document.getElementById("seeResultsBtn").addEventListener("click", () => {
   document.getElementById("resultsBandName").textContent = b.name;
   document.getElementById("resultsCopy").textContent = b.copy;
 
-  const gapsList = document.getElementById("gapsList");
-  gapsList.innerHTML = "";
+  // Rebuild into a stable wrapper. (Previously this replaced the <ul> itself via
+  // outerHTML on a perfect score, which destroyed the #gapsList node — a second
+  // click then threw on a null element and the page stopped responding.)
+  const gapsWrap = document.getElementById("gapsWrap");
+  gapsWrap.innerHTML = "";
   const gapCats = CATEGORIES.filter((cat, ci) =>
     document.querySelectorAll(`input[data-cat="${ci}"]:checked`).length < cat.items.length
   );
   if (gapCats.length === 0) {
-    gapsList.outerHTML = '<p class="no-gaps">Every category is fully checked — nice work.</p>';
+    const p = document.createElement("p");
+    p.className = "no-gaps";
+    p.textContent = "Every category is fully checked — nice work.";
+    gapsWrap.appendChild(p);
   } else {
+    const ul = document.createElement("ul");
+    ul.className = "gaps";
+    ul.id = "gapsList";
     gapCats.forEach(cat => {
       const li = document.createElement("li");
       const checked = document.querySelectorAll(`input[data-cat="${CATEGORIES.indexOf(cat)}"]:checked`).length;
       li.textContent = `${cat.name} (${checked}/${cat.items.length} covered)`;
-      gapsList.appendChild(li);
+      ul.appendChild(li);
     });
+    gapsWrap.appendChild(ul);
   }
 
   const panel = document.getElementById("resultsPanel");
@@ -325,6 +346,23 @@ document.getElementById("seeResultsBtn").addEventListener("click", () => {
 // AJAX first; a real form POST as the guaranteed fallback if that is blocked.
 // ---------------------------------------------------------------------------
 const ML_ENDPOINT = "https://assets.mailerlite.com/jsonp/2596829/forms/196814015770396538/subscribe";
+
+// The category breakdown is what the email buys. Score, band and the call CTA stay
+// open to everyone — a booked call is worth more than an address.
+function revealBreakdown() {
+  const detail = document.getElementById("gapDetail");
+  if (detail) {
+    detail.hidden = false;
+    detail.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+  const gate = document.getElementById("emailGate");
+  if (gate) {
+    const title = gate.querySelector(".gate-title");
+    const copy = gate.querySelector(".gate-copy");
+    if (title) title.textContent = "Your results are on the way";
+    if (copy) copy.remove();
+  }
+}
 
 function mlFields(email, score, bandName) {
   return {
@@ -362,6 +400,11 @@ document.getElementById("emailForm").addEventListener("submit", async (e) => {
 
   btn.disabled = true;
   btn.textContent = "Sending\u2026";
+
+  // Unlock the breakdown as soon as the address is captured. Doing it here rather
+  // than on a successful response matters: the fallback path below navigates away,
+  // so waiting for a response would mean some people never see what they asked for.
+  revealBreakdown();
 
   try {
     const fd = new FormData();
