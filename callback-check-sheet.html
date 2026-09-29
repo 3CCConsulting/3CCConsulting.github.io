@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Job-Site Callback Check Sheet | Cornett Consulting Company</title>
+<meta name="description" content="A free one-page check sheet for roofing and trade owners. Tally every callback, total it Friday, and fix the biggest number first.">
+<style>
+  :root{
+    --navy:#1B3A5C; --navy-dark:#122740; --blue:#2E75B6; --orange:#E07B1E; --green:#2E9E4C;
+    --ink:#1a1f28; --muted:#5b6474; --paper:#F7F8FA; --card:#FFFFFF; --line:#E3E7ED;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:Calibri,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--paper);}
+  a{color:var(--blue);}
+  .bar{height:6px;background:linear-gradient(90deg,var(--blue) 0 33.3%,var(--orange) 33.3% 66.6%,var(--green) 66.6%);}
+  .hero{background:linear-gradient(135deg,var(--navy-dark) 0%,var(--navy) 55%,var(--blue) 130%);color:#fff;padding:34px 20px 42px;text-align:center;}
+  .hero .brandrow{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px;}
+  .hero .brandrow img{height:52px;background:#fff;border-radius:8px;padding:4px 8px;}
+  .hero .brandrow .name{font-size:14px;letter-spacing:.06em;text-transform:uppercase;opacity:.9;font-weight:600;}
+  .hero h1{font-size:clamp(26px,4.2vw,40px);margin:6px 0 10px;font-weight:800;letter-spacing:-.01em;line-height:1.1;}
+  .hero p.sub{max-width:580px;margin:0 auto;font-size:17px;line-height:1.5;opacity:.93;}
+  main{max-width:960px;margin:0 auto;padding:30px 20px 50px;}
+  .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;align-items:start;}
+  @media (max-width:800px){.grid{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;box-shadow:0 4px 16px rgba(18,39,64,.06);}
+  h2{font-size:20px;color:var(--navy);margin:0 0 12px;font-weight:800;}
+  ul.gets{list-style:none;padding:0;margin:0 0 6px;}
+  ul.gets li{position:relative;padding:7px 0 7px 30px;font-size:16px;line-height:1.45;border-top:1px solid var(--line);}
+  ul.gets li:first-child{border-top:none;}
+  ul.gets li:before{content:"\2713";position:absolute;left:4px;top:6px;color:var(--green);font-weight:800;font-size:17px;}
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;}
+  @media (max-width:520px){.how{grid-template-columns:1fr;}}
+  .how div{background:var(--paper);border-radius:10px;padding:12px;border-top:4px solid var(--blue);font-size:14px;line-height:1.4;}
+  .how div:nth-child(2){border-top-color:var(--orange);} .how div:nth-child(3){border-top-color:var(--green);}
+  .how b{display:block;color:var(--navy);font-size:15px;margin-bottom:3px;}
+  .preview{width:100%;border:1px solid var(--line);border-radius:8px;display:block;}
+  .cap{font-size:13px;color:var(--muted);margin:8px 0 0;text-align:center;}
+  form{margin-top:16px;}
+  label{display:block;font-weight:700;font-size:15px;margin-bottom:6px;color:var(--navy);}
+  input[type=email]{width:100%;padding:13px 14px;font-size:16px;border:2px solid #C7CEDA;border-radius:8px;font-family:inherit;}
+  input[type=email]:focus{outline:none;border-color:var(--blue);}
+  button{margin-top:12px;width:100%;padding:14px;font-size:17px;font-weight:800;color:#fff;background:var(--orange);border:none;border-radius:8px;cursor:pointer;font-family:inherit;}
+  button:disabled{opacity:.7;cursor:default;}
+  .email-note{font-size:13px;color:var(--muted);margin:10px 0 0;line-height:1.4;}
+  #download{display:none;margin-top:16px;background:#EAF6EE;border:1px solid #BFE3CA;border-radius:10px;padding:16px;}
+  #download.show{display:block;}
+  #download p{margin:0 0 10px;font-size:15px;line-height:1.45;}
+  #download a.btn{display:block;text-align:center;background:var(--green);color:#fff;text-decoration:none;font-weight:800;padding:13px;border-radius:8px;font-size:16px;}
+  .fine{font-size:13px;color:var(--muted);line-height:1.45;margin-top:22px;}
+  footer{text-align:center;font-size:13px;color:var(--muted);padding:24px 20px 34px;border-top:1px solid var(--line);}
+  footer b{color:var(--navy);}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+<header class="hero">
+  <div class="brandrow"><img src="logo.png" alt="Cornett Consulting Company"><span class="name">Cornett Consulting Company</span></div>
+  <h1>Count the callbacks.<br>Fix what matters.</h1>
+  <p class="sub">A free one-page check sheet for roofing and trade owners. Tally every callback the day it comes in, total it Friday, and you'll know exactly what to fix first.</p>
+</header>
+
+<main>
+  <div class="grid">
+    <section class="card">
+      <h2>What's on the sheet</h2>
+      <ul class="gets">
+        <li><b>Weekly tally grid</b>, Monday through Saturday, with the callbacks roofers get most already listed, plus a row for your own.</li>
+        <li><b>Callback detail log</b> for the job, the crew and the cause: material, install, weather, communication or unknown.</li>
+        <li><b>Friday review box</b>: your top callback, the likely cause, one fix to try, and who owns it.</li>
+        <li><b>Fillable PDF</b>. Type into it on a laptop or tablet, or print it and keep it in the truck.</li>
+      </ul>
+      <div class="how">
+        <div><b>1. Tally daily</b>Mark each callback the day the call comes in, not from memory.</div>
+        <div><b>2. Total Friday</b>Add up each row. The biggest number is your answer.</div>
+        <div><b>3. Fix the top one</b>Pick one fix, give it an owner, check it Monday.</div>
+      </div>
+
+      <form id="signup" novalidate>
+        <label for="emailInput">Where should we send it?</label>
+        <input type="email" id="emailInput" name="email" placeholder="you@yourbusiness.com" autocomplete="email" required>
+        <button type="submit">Get the free check sheet</button>
+        <p class="email-note">You'll get the download right here, plus a quick email asking you to confirm your address. No spam, and you can unsubscribe anytime.</p>
+      </form>
+
+      <div id="download" role="status" aria-live="polite">
+        <p><b>It's yours.</b> Download it now. Once you confirm your email, you'll get the occasional practical tip on quality and compliance for small shops.</p>
+        <a class="btn" href="callback-check-sheet.pdf" download>Download the check sheet (PDF)</a>
+      </div>
+    </section>
+
+    <aside>
+      <img class="preview" src="callback-check-sheet-preview.jpg" alt="Preview of the one-page Job-Site Callback Check Sheet" width="935" height="1210">
+      <p class="cap">One page. Fill it in on screen or print it.</p>
+    </aside>
+  </div>
+
+  <p class="fine">Every callback is an unpaid trip back. You can't fix what you don't count, and a week of tallies usually settles what a month of arguing about it won't.</p>
+</main>
+
+<footer>
+  <b>Cornett Consulting Company</b> · Middletown, Ohio · <a href="index.html">3ccconsulting.com</a> · hello@3ccconsulting.com
+</footer>
+
+<script>
+(function () {
+  var ML_ENDPOINT = "https://assets.mailerlite.com/jsonp/2596829/forms/199535855436563962/subscribe";
+  var FLAG = "ccc_callback_unlocked";
+  var form = document.getElementById("signup");
+  var emailInput = document.getElementById("emailInput");
+  var dl = document.getElementById("download");
+
+  function unlock() {
+    dl.classList.add("show");
+    try { sessionStorage.setItem(FLAG, "1"); } catch (e) {}
+  }
+  // Returning from the fallback POST: show the download again.
+  try { if (sessionStorage.getItem(FLAG) === "1") { unlock(); form.style.display = "none"; } } catch (e) {}
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = (emailInput.value || "").trim();
+    if (!emailInput.checkValidity() || !email) {
+      emailInput.focus();
+      emailInput.reportValidity && emailInput.reportValidity();
+      return;
+    }
+    // Lead capture -> MailerLite, group "Callback Check Sheet" (199535852450219545).
+    // AJAX first; real form POST as fallback (not subject to CORS).
+    var fields = { "fields[email]": email, "ml-submit": "1", "anticsrf": "true" };
+    var btn = form.querySelector("button");
+    btn.textContent = "Sending...";
+    btn.disabled = true;
+    // Unlock on submit, not on response: the fallback navigates away.
+    unlock();
+    dl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+    var fd = new FormData();
+    Object.keys(fields).forEach(function (k) { fd.append(k, fields[k]); });
+    fetch(ML_ENDPOINT, { method: "POST", body: fd })
+      .then(function (res) {
+        if (!res.ok) throw new Error("Request failed");
+        btn.textContent = "Sent ✓";
+        emailInput.disabled = true;
+        var note = document.querySelector(".email-note");
+        note.textContent = "Thanks. Check your inbox and click the confirmation link.";
+        note.style.color = "#2E9E4C"; note.style.fontWeight = "600";
+      })
+      .catch(function () {
+        var f = document.createElement("form");
+        f.action = ML_ENDPOINT; f.method = "POST"; f.style.display = "none";
+        Object.keys(fields).forEach(function (k) {
+          var i = document.createElement("input");
+          i.type = "hidden"; i.name = k; i.value = fields[k]; f.appendChild(i);
+        });
+        document.body.appendChild(f);
+        f.submit();
+      });
+  });
+})();
+</script>
+</body>
+</html>
