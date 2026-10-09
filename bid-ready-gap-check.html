@@ -359,7 +359,7 @@ function revealBreakdown() {
   if (gate) {
     const title = gate.querySelector(".gate-title");
     const copy = gate.querySelector(".gate-copy");
-    if (title) title.textContent = "Your results are on the way";
+    if (title) title.textContent = "You're all set";
     if (copy) copy.remove();
   }
 }
@@ -412,7 +412,7 @@ document.getElementById("emailForm").addEventListener("submit", async (e) => {
     const res = await fetch(ML_ENDPOINT, { method: "POST", body: fd });
     if (!res.ok) throw new Error("Request failed");
     btn.textContent = "Sent \u2713";
-    note.textContent = "Thanks \u2014 check your inbox and click the confirmation link, then your results are on the way.";
+    note.textContent = "Got it, I'll be in touch.";
     note.style.color = "#4E9A3A";
     note.style.fontWeight = "600";
   } catch (err) {

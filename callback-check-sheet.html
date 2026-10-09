@@ -80,11 +80,11 @@
         <label for="emailInput">Where should we send it?</label>
         <input type="email" id="emailInput" name="email" placeholder="you@yourbusiness.com" autocomplete="email" required>
         <button type="submit">Get the free check sheet</button>
-        <p class="email-note">You'll get the download right here, plus a quick email asking you to confirm your address. No spam, and you can unsubscribe anytime.</p>
+        <p class="email-note">You'll get the download right here. No spam, and you can unsubscribe anytime.</p>
       </form>
 
       <div id="download" role="status" aria-live="polite">
-        <p><b>It's yours.</b> Download it now. Once you confirm your email, you'll get the occasional practical tip on quality and compliance for small shops.</p>
+        <p><b>It's yours.</b> Download it now, and every so often I'll send you a practical tip on quality and compliance for small shops.</p>
         <a class="btn" href="callback-check-sheet.pdf" download>Download the check sheet (PDF)</a>
       </div>
     </section>
@@ -143,7 +143,7 @@
         btn.textContent = "Sent ✓";
         emailInput.disabled = true;
         var note = document.querySelector(".email-note");
-        note.textContent = "Thanks. Check your inbox and click the confirmation link.";
+        note.textContent = "Got it, I'll be in touch.";
         note.style.color = "#2E9E4C"; note.style.fontWeight = "600";
       })
       .catch(function () {

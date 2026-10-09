@@ -385,7 +385,7 @@ document.getElementById("emailForm").addEventListener("submit", async (e) => {
   }
   const gateTitle = document.querySelector("#emailGate .gate-title");
   const gateCopy = document.querySelector("#emailGate .gate-copy");
-  if (gateTitle) gateTitle.textContent = "Your results are on the way";
+  if (gateTitle) gateTitle.textContent = "You're all set";
   if (gateCopy) gateCopy.remove();
 
   try {
@@ -397,7 +397,7 @@ document.getElementById("emailForm").addEventListener("submit", async (e) => {
     emailInput.disabled = true;
     const note = document.querySelector(".email-note");
     if (note) {
-      note.textContent = "Thanks \u2014 check your inbox and click the confirmation link, then your results are on the way.";
+      note.textContent = "Got it, I'll be in touch.";
       note.style.color = "#4E9A3A";
       note.style.fontWeight = "600";
     }
