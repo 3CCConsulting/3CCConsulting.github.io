@@ -34,10 +34,14 @@
   .ss-note{font-size:13.5px; color:var(--ink-soft); margin-bottom:28px;}
   .ss-next{font-size:15px; color:var(--ink); margin-bottom:6px;}
   .ss-fine{font-size:13px; font-style:italic; color:var(--ink-soft); margin-bottom:40px;}
+  .ss-send{background:#fff; border:1px solid var(--line); border-left:4px solid var(--orange); border-radius:8px; padding:16px 20px; margin:8px 0 24px;}
+  .ss-send h3{font-size:19px; margin-bottom:6px;}
+  .ss-send p{font-size:14.5px; color:var(--ink-soft); margin-bottom:12px;}
+  .ss-status{font-size:14px; color:var(--ink); margin-top:10px; min-height:1px;}
   @media (max-width:640px){ .ss-grid,.ss-grid3{grid-template-columns:1fr;} }
   @page{margin:0.5in;}
   @media print{
-    header,footer,.to-top,.ss-actions,.ss-note,.page-header .backlink{display:none !important;}
+    header,footer,.to-top,.ss-actions,.ss-note,.ss-send,.page-header .backlink{display:none !important;}
     body{background:#fff; font-size:12px;}
     .page-header{padding:0 0 4px;} .page-header h1{font-size:24px; margin:0;} .page-header .lede{font-size:12px; margin:2px 0 0;}
     section{padding:0 !important;} .wrap{padding:0 !important; max-width:none;}
@@ -173,7 +177,14 @@
       <a class="btn ghost" href="risk-opportunity-starter-sheet.pdf" target="_blank" rel="noopener">Download the fillable PDF</a>
       <button type="button" class="btn ghost" id="ss-clear">Clear the sheet</button>
     </div>
-    <p class="ss-note">What you type stays on this device. Nothing is sent anywhere. It is saved in this browser so you can come back to it. To keep a copy, print it or save it as a PDF.</p>
+    <p class="ss-note">What you type stays on this device. Nothing is sent anywhere unless you choose to email it to me. It is saved in this browser so you can come back to it. To keep a copy, print it or save it as a PDF.</p>
+
+    <div class="ss-send">
+      <h3>Want a second pair of eyes? Send me your sheet.</h3>
+      <p>Send me your sheet and I'll take a look. This opens your email app with your sheet filled in. Nothing is sent until you press send in your email.</p>
+      <button type="button" class="btn" id="ss-send">Email me my sheet</button>
+      <div class="ss-status" id="ss-status" role="status" aria-live="polite"></div>
+    </div>
 
     <p class="ss-next">Next step: take the <a href="compliance-checklist.html">free Compliance Checklist</a> (24 checks, about three minutes). Want help ranking what you wrote? <a href="https://cal.com/sarah-cornett-foddyd">Book a Discovery Session</a>.</p>
     <p class="ss-fine">A starting point for your own thinking, not a full risk assessment or legal review.</p>
@@ -207,6 +218,45 @@
   }
   fields.forEach(function(el){ el.addEventListener('input',save); el.addEventListener('change',save); });
   load();
+  function val(k){ var el=document.querySelector('[data-f="'+k+'"]'); return el?el.value.trim():''; }
+  function line(label,items){ var parts=[]; items.forEach(function(i){ if(i[1]){ parts.push(i[0]+': '+i[1]); } }); return parts.length?'   '+parts.join(' | '):''; }
+  function build(){
+    var out=[],any=false;
+    function block(title,pfx,what,r1,r2){
+      var lines=[];
+      for(var n=1;n<=3;n++){
+        var p=pfx+n, w=val(p+'-what');
+        var det=line('',[[r1[1],val(p+'-'+r1[0])],[r2[1],val(p+'-'+r2[0])],['Owner',val(p+'-owner')],['Next step',val(p+'-step')],['By',val(p+'-date')]]);
+        if(w||det){ any=true; lines.push((title==='RISKS'?'Risk ':'Opportunity ')+n+': '+(w||'(blank)')); if(det){ lines.push(det); } }
+      }
+      if(lines.length){ out.push(title); out=out.concat(lines); out.push(''); }
+    }
+    block('RISKS','r',' ',['likely','Likelihood'],['bad','Impact']);
+    block('OPPORTUNITIES','o',' ',['worth','Worth'],['effort','Effort']);
+    var foot=line('',[['Completed by',val('by')],['Date',val('done')],['Review on',val('review')]]);
+    if(foot){ out.push(foot.trim()); }
+    return any?out.join('\n'):'';
+  }
+  window.__ssBuild=build;
+  document.getElementById('ss-send').addEventListener('click',function(){
+    var status=document.getElementById('ss-status');
+    var text=build();
+    if(!text){ status.textContent='Fill in at least one line first, then press the button again.'; return; }
+    var subject='My Risk and Opportunity Starter Sheet';
+    var intro='Hi Sarah,\n\nHere is my Starter Sheet. Could you take a look?\n\n';
+    var outro='\n\nMy name and the best way to reach me:\n';
+    var body=intro+text+outro;
+    var href='mailto:hello@3ccconsulting.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+    if(href.length>1900){
+      var short='Hi Sarah,\n\nMy Starter Sheet is below. If it did not come through, I will paste it in.\n\n';
+      try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(body); } }catch(e){}
+      href='mailto:hello@3ccconsulting.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(short);
+      status.textContent='Your sheet is long, so it was copied. Paste it into the email that opens.';
+    } else {
+      status.textContent='Your email app should open now. Press send there when you are ready.';
+    }
+    window.location.href=href;
+  });
   document.getElementById('ss-print').addEventListener('click',function(){ window.print(); });
   document.getElementById('ss-clear').addEventListener('click',function(){
     if(window.confirm('Clear everything you entered on this sheet?')){
