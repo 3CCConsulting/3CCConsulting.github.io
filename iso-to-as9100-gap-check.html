@@ -171,7 +171,7 @@
 
       <div class="cta-final">
         <p>Fifteen minutes, no prep, no pitch deck. I go through what you didn't check, and I tell you which gaps would cost you the most findings.</p>
-        <a class="btn" href="https://cal.com/sarah-cornett-foddyd" target="_blank" rel="noopener">Book a 15-Minute Call</a>
+        <a class="btn" href="https://cal.com/sarah-cornett-foddyd" target="_blank" rel="noopener" data-umami-event="Book a call">Book a 15-Minute Call</a>
       </div>
     </div>
   </div>
@@ -394,6 +394,7 @@ function fallbackFormPost(email, score, bandName, note) {
 
 document.getElementById("emailForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+  try{window.umami&&window.umami.track("Lead AS9100 Gap Check");}catch(_){}
   const email = document.getElementById("emailInput").value;
   const score = currentScore();
   const bandName = bandFor(score).name;

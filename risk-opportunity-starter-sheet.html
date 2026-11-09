@@ -188,7 +188,7 @@
       <div class="ss-status" id="ss-status" role="status" aria-live="polite"></div>
     </div>
 
-    <p class="ss-next">Next step: take the <a href="compliance-checklist.html">free Compliance Checklist</a> (24 checks, about three minutes). Want help ranking what you wrote? <a href="https://cal.com/sarah-cornett-foddyd">Book a Discovery Session</a>.</p>
+    <p class="ss-next">Next step: take the <a href="compliance-checklist.html">free Compliance Checklist</a> (24 checks, about three minutes). Want help ranking what you wrote? <a href="https://cal.com/sarah-cornett-foddyd" data-umami-event="Book a call">Book a Discovery Session</a>.</p>
     <p class="ss-fine">A starting point for your own thinking, not a full risk assessment or legal review.</p>
   </div>
 </section>
@@ -244,6 +244,7 @@
     var status=document.getElementById('ss-status');
     var text=build();
     if(!text){ status.textContent='Fill in at least one line first, then press the button again.'; return; }
+    try{window.umami&&window.umami.track("Starter Sheet email me");}catch(_){}
     var subject='My Risk and Opportunity Starter Sheet';
     var intro='Hi Sarah,\n\nHere is my Starter Sheet. Could you take a look?\n\n';
     var outro='\n\nMy name and the best way to reach me:\n';
@@ -259,7 +260,7 @@
     }
     window.location.href=href;
   });
-  document.getElementById('ss-print').addEventListener('click',function(){ window.print(); });
+  document.getElementById('ss-print').addEventListener('click',function(){ try{window.umami&&window.umami.track("Starter Sheet print");}catch(_){} window.print(); });
   document.getElementById('ss-clear').addEventListener('click',function(){
     if(window.confirm('Clear everything you entered on this sheet?')){
       fields.forEach(function(el){ el.value=''; });

@@ -171,7 +171,7 @@
 
       <div class="cta-final">
         <p>See exactly where your business stands and what to do about each gap, in a free Discovery Session.</p>
-        <a class="btn" href="https://cal.com/sarah-cornett-foddyd" target="_blank" rel="noopener">Book a Discovery Session</a>
+        <a class="btn" href="https://cal.com/sarah-cornett-foddyd" target="_blank" rel="noopener" data-umami-event="Book a call">Book a Discovery Session</a>
       </div>
     </div>
   </div>
@@ -352,6 +352,7 @@ document.getElementById("seeResultsBtn").addEventListener("click", () => {
 // no mail-app popup. Notifications land at consulting3cc@gmail.com.
 document.getElementById("emailForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+  try{window.umami&&window.umami.track("Lead Compliance Checklist");}catch(_){}
   const emailInput = document.getElementById("emailInput");
   const email = emailInput.value;
   const score = currentScore();

@@ -128,6 +128,7 @@
     }
     // Lead capture -> MailerLite, group "Callback Check Sheet" (199535852450219545).
     // AJAX first; real form POST as fallback (not subject to CORS).
+    try{window.umami&&window.umami.track("Lead Callback Check Sheet");}catch(_){}
     var fields = { "fields[email]": email, "ml-submit": "1", "anticsrf": "true" };
     var btn = form.querySelector("button");
     btn.textContent = "Sending...";
